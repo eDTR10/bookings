@@ -1,16 +1,20 @@
 import { useState, useEffect, useMemo } from 'react';
 import { getHoliday, isSunday } from '../../utils/calendarUtils';
+import { useApp } from '../../App';
 
 interface DashboardProps {
     role: string;
-    bookings: any[];
+    bookings?: any[];
     setView: (view: string) => void;
     currentUser?: any;
     offices?: any[];
     setPrefilledData?: (data: any) => void;
 }
 
-export default function Dashboard({ bookings, setView, offices = [], setPrefilledData }: Omit<DashboardProps, 'role' | 'currentUser'>) {
+export default function Dashboard({ bookings: bookingsProp, setView, offices: officesProp = [], setPrefilledData }: Omit<DashboardProps, 'role' | 'currentUser'>) {
+    const appCtx = useApp();
+    const bookings = bookingsProp ?? appCtx?.bookings ?? [];
+    const offices = officesProp.length > 0 ? officesProp : (appCtx?.offices ?? []);
     const [currentDate, setCurrentDate] = useState(new Date());
     const [realTime, setRealTime] = useState('');
     const [reqRegion, setReqRegion] = useState('All');

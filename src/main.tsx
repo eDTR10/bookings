@@ -84,11 +84,6 @@ const AdminRoute = ({ component: Component, ...rest }: any) => {
   return <Component currentUser={currentUser} bookings={bookings} offices={offices} onUpdateStatus={handleUpdateStatus} onDeleteBooking={handleDeleteBooking} {...rest} />;
 };
 
-const RootRoute = ({ component: Component, ...rest }: any) => {
-  const { bookings, offices, setBookings } = useApp() || { bookings: [], offices: [] };
-  return <Component bookings={bookings} offices={offices} setBookings={setBookings} {...rest} />;
-};
-
 const RoleBasedDashboard = ({ currentUser, bookings, offices, ...rest }: any) => {
   if (currentUser?.role === 'super-admin') {
     return <SuperAdminDashboard bookings={bookings} {...rest} />;
@@ -99,14 +94,14 @@ const RoleBasedDashboard = ({ currentUser, bookings, offices, ...rest }: any) =>
 const router = createBrowserRouter([
   // ── Requestor pages 
   {
-    path: "/bookings",
+    path: "/",
     element: <RequestorLayoutWrapper />,
     children: [
       {
         index: true,
         element: (
           <Suspense fallback={<Loader />}>
-            <RootRoute component={RequestorDashboard} setView={(view: string) => { if (view === 'new-booking') window.location.href = '/bookings/new-booking'; }} />
+            <RequestorDashboard setView={(view: string) => { if (view === 'new-booking') window.location.href = '/bookings/new-booking'; }} />
           </Suspense>
         ),
       },
@@ -114,7 +109,7 @@ const router = createBrowserRouter([
         path: "track-requests",
         element: (
           <Suspense fallback={<Loader />}>
-            <RootRoute component={TrackRequests} />
+            <TrackRequests />
           </Suspense>
         ),
       },
@@ -122,22 +117,16 @@ const router = createBrowserRouter([
         path: "new-booking",
         element: (
           <Suspense fallback={<Loader />}>
-            <RootRoute component={NewBooking} onCancel={() => window.history.back()} onAdd={(entry: any) => { console.log('Booking added', entry); window.location.href = '/bookings/track-requests'; }} />
+            <NewBooking onCancel={() => window.history.back()} onAdd={(entry: any) => { console.log('Booking added', entry); window.location.href = '/bookings/track-requests'; }} />
           </Suspense>
         ),
       },
     ],
   },
 
-  // ── Root redirect ─────────────────────────────────────
-  {
-    path: "/",
-    element: <Navigate to="/bookings" replace />,
-  },
-
   // ── Auth pages (no navbar) ────────────────────────────
   {
-    path: "/bookings/login",
+    path: "/login",
     element: (
       <Suspense fallback={<Loader />}>
         <Login />
@@ -145,7 +134,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/bookings/register",
+    path: "/register",
     element: (
       <Suspense fallback={<Loader />}>
         <Register />
@@ -155,7 +144,7 @@ const router = createBrowserRouter([
 
   // ── Admin pages wrapper ───────────────────────────────
   {
-    path: "/bookings/admin",
+    path: "/admin",
     element: <AdminLayoutWrapper />,
     children: [
       {
@@ -254,27 +243,27 @@ const router = createBrowserRouter([
 
   // ── Legacy dashboard redirect ──────────────────────────
   {
-    path: "/bookings/dashboard",
-    element: <Navigate to="/bookings/admin/dashboard" replace />,
+    path: "/dashboard",
+    element: <Navigate to="/admin/dashboard" replace />,
   },
 
   // ── Legacy standalone dashboard (kept as fallback) ────
   {
-    path: "/bookings/dashboard-old",
+    path: "/dashboard-old",
     element: <Suspense fallback={<Loader />}><LegacyDashboard /></Suspense>,
   },
 
   // ── Main app with navbar ──────────────────────────────
   {
-    path: "/bookings/",
+    path: "/app",
     element: <App />,
     children: [
       {
-        path: "/bookings/",
-        element: <Navigate to="/bookings/admin/dashboard" />,
+        index: true,
+        element: <Navigate to="/admin/dashboard" />,
       },
       {
-        path: "/bookings/page1",
+        path: "page1",
         element: (
           <Suspense fallback={<Loader />}>
             <Page1 />
@@ -282,7 +271,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/bookings/page2",
+        path: "page2",
         element: (
           <Suspense fallback={<Loader />}>
             <Page2 />

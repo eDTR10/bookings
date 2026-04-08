@@ -1,16 +1,19 @@
 import { useState, useMemo, useEffect, ChangeEvent, FormEvent } from 'react';
 import Swal from 'sweetalert2';
 import axios from '../../plugin/axios';
+import { useApp } from '../../App';
 
 interface NewBookingProps {
-    offices: any[];
+    offices?: any[];
     bookings?: any[];
     prefilledData?: any;
     onAdd: (newEntry: any) => void;
     onCancel: () => void;
 }
 
-export default function NewBooking({ offices, bookings = [], prefilledData, onAdd, onCancel }: NewBookingProps) {
+export default function NewBooking({ offices: officesProp, bookings = [], prefilledData, onAdd, onCancel }: NewBookingProps) {
+    const appCtx = useApp();
+    const offices = officesProp ?? appCtx?.offices ?? [];
     const [formData, setFormData] = useState<any>({
         venue: prefilledData?.venue && prefilledData.venue !== 'All' ? prefilledData.venue : '',
         facility: prefilledData?.facility && prefilledData.facility !== 'All' ? prefilledData.facility : '',

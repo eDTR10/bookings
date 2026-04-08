@@ -1,15 +1,19 @@
 import { useState } from 'react';
+import { useApp } from '../../App';
 
 interface TrackRequestsProps {
-    bookings: any[];
-    onUpdateStatus: (id: string | number, status: string) => void;
+    bookings?: any[];
+    onUpdateStatus?: (id: string | number, status: string) => void;
     onDeleteBooking?: (id: string | number) => void;
     onBulkDeleteBookings?: (ids: (string | number)[]) => void;
     currentUser?: any;
     offices?: any[];
 }
 
-export default function TrackRequests({ bookings, onUpdateStatus, onDeleteBooking, onBulkDeleteBookings, currentUser, offices = [] }: TrackRequestsProps) {
+export default function TrackRequests({ bookings: bookingsProp, onUpdateStatus: onUpdateStatusProp, onDeleteBooking, onBulkDeleteBookings, currentUser, offices = [] }: TrackRequestsProps) {
+    const appCtx = useApp();
+    const bookings = bookingsProp ?? appCtx?.bookings ?? [];
+    const onUpdateStatus = onUpdateStatusProp ?? appCtx?.handleUpdateStatus ?? (() => {});
     const [filter, setFilter] = useState('ALL');
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedIds, setSelectedIds] = useState<(string | number)[]>([]);

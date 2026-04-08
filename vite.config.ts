@@ -2,9 +2,9 @@ import path from "path"
 import react from "@vitejs/plugin-react-swc"
 import { defineConfig } from "vite"
 
-export default defineConfig(({ command }) => ({
-  // Use root base for local dev, repo name for GitHub Pages prod
-  base: command === 'build' ? '/react-vite-supreme/' : '/',
+export default defineConfig({
+        // REPO-NAME
+  base: "/bookings",
   plugins: [react()],
   server: {
     host: '0.0.0.0', // IP address, 0.0.0.0 makes it accessible on your local network
@@ -15,4 +15,4 @@ export default defineConfig(({ command }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-}))
+})
