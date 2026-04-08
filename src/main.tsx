@@ -94,7 +94,7 @@ const RoleBasedDashboard = ({ currentUser, bookings, offices, ...rest }: any) =>
 const router = createBrowserRouter([
   // ── Requestor pages 
   {
-    path: "/",
+    path: "/bookings",
     element: <RequestorLayoutWrapper />,
     children: [
       {
@@ -126,7 +126,7 @@ const router = createBrowserRouter([
 
   // ── Auth pages (no navbar) ────────────────────────────
   {
-    path: "/login",
+    path: "/bookings/login",
     element: (
       <Suspense fallback={<Loader />}>
         <Login />
@@ -134,7 +134,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/register",
+    path: "/bookings/register",
     element: (
       <Suspense fallback={<Loader />}>
         <Register />
@@ -144,7 +144,7 @@ const router = createBrowserRouter([
 
   // ── Admin pages wrapper ───────────────────────────────
   {
-    path: "/admin",
+    path: "/bookings/admin",
     element: <AdminLayoutWrapper />,
     children: [
       {
@@ -243,24 +243,24 @@ const router = createBrowserRouter([
 
   // ── Legacy dashboard redirect ──────────────────────────
   {
-    path: "/dashboard",
-    element: <Navigate to="/admin/dashboard" replace />,
+    path: "/bookings/dashboard",
+    element: <Navigate to="/bookings/admin/dashboard" replace />,
   },
 
   // ── Legacy standalone dashboard (kept as fallback) ────
   {
-    path: "/dashboard-old",
+    path: "/bookings/dashboard-old",
     element: <Suspense fallback={<Loader />}><LegacyDashboard /></Suspense>,
   },
 
   // ── Main app with navbar ──────────────────────────────
   {
-    path: "/app",
+    path: "/bookings/app",
     element: <App />,
     children: [
       {
         index: true,
-        element: <Navigate to="/admin/dashboard" />,
+        element: <Navigate to="/bookings/admin/dashboard" />,
       },
       {
         path: "page1",
@@ -284,7 +284,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-], { basename: import.meta.env.BASE_URL });
+], { basename: "/" });
 
 function wait(time: number) {
   return new Promise((resolve) => {
