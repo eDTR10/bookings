@@ -1,0 +1,1 @@
+import{c as e}from"./index-97cab154.js";const o=e("ChevronLeft",[["path",{d:"m15 18-6-6 6-6",key:"1wnfg3"}]]),t=e("Clock",[["circle",{cx:"12",cy:"12",r:"10",key:"1mglay"}],["polyline",{points:"12 6 12 12 16 14",key:"68esgv"}]]);export{o as C,t as a};
